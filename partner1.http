@@ -1,0 +1,84 @@
+@base_url = http://localhost:3000
+@api_token = 123
+
+### Get all events
+GET {{base_url}}/events
+X-Api-Token: {{api_token}}
+
+### Create new event
+# @name create_event
+POST {{base_url}}/events
+Content-Type: application/json
+X-Api-Token: {{api_token}}
+
+{
+    "name": "New Event",
+    "description": "Test",
+    "date": "2024-06-19T00:00:00",
+    "price": 100
+}
+###
+@event_id = {{ create_event.response.body.id }}
+
+### Get event by id
+GET {{base_url}}/events/{{event_id}}
+X-Api-Token: {{api_token}}
+
+### Update event by id
+PATCH {{base_url}}/events/{{event_id}}
+Content-Type: application/json
+X-Api-Token: {{api_token}}
+
+{
+    "name": "New Event",
+    "description": "Test 2",
+    "date": "2024-06-19T00:00:00",
+    "price": 100
+}
+
+### Remove event by id
+DELETE {{base_url}}/events/{{event_id}}
+X-Api-Token: {{api_token}}
+
+###Spot endpoints
+###Get all spots by Event
+GET {{base_url}}/events/{{event_id}}/spots
+X-Api-Token: {{api_token}}
+
+###Create Spot
+# @name create_spot
+POST {{base_url}}/events/{{event_id}}/spots
+Content-Type: application/json
+X-Api-Token: {{api_token}}
+
+{
+    "name": "A1"
+}
+
+###
+@spot_id = {{ create_spot.response.body.id }}
+@spot_name = {{ create_spot.response.body.name }}
+
+###Find Spot by id and eventId
+GET {{base_url}}/events/{{event_id}}/spots/{{spot_id}}
+X-Api-Token: {{api_token}}
+
+###Update Spot
+PATCH {{base_url}}/events/{{event_id}}/spots/{{spot_id}}
+X-Api-Token: {{api_token}}
+
+###Delete Spot
+DELETE {{base_url}}/events/{{event_id}}/spots/{{spot_id}}
+X-Api-Token: {{api_token}}
+
+###Create reservation
+POST {{base_url}}/events/{{event_id}}/reservations
+Content-Type: application/json
+X-Api-Token: {{api_token}}
+
+{
+    "spots": ["{{spot_name}}"],
+    "ticket_kind": "full",
+    "email": "test@test.com"
+}
+###
